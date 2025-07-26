@@ -1,1 +1,3 @@
-# freehekim-gpt-backend
+# FreeHekim GPT Backend
+
+FastAPI ile GPT destekli backend sunucu.
