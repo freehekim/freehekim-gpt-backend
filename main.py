@@ -1,22 +1,15 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-import openai
+from fastapi import FastAPI, Request
 import os
+import openai
 
 app = FastAPI()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-class Message(BaseModel):
-    prompt: str
-
-@app.post("/ask")
-async def ask_gpt(message: Message):
+@app.get("/generate")
+async def generate(prompt: str):
     response = openai.ChatCompletion.create(
         model="gpt-4",
-        messages=[
-            {"role": "system", "content": "FreeHekimGPT olarak cevap ver."},
-            {"role": "user", "content": message.prompt}
-        ]
+        messages=[{"role": "user", "content": prompt}]
     )
-    return {"response": response['choices'][0]['message']['content']}
+    return {"response": response.choices[0].message["content"]}
